@@ -8,6 +8,7 @@ import "./Home.css";
 const SearchResults = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const images = [
     {
       original:
@@ -20,19 +21,22 @@ const SearchResults = () => {
   ];
   const search = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         "https://api.openai.com/v1/completions",
         {
           prompt:
-            "give the calories, fat, protein etc. values per portion of " +
-            query +
-            "." +
-            "What is the benefit of eating " +
-            query +
-            "?",
+            "Answer only food related queries. If other queries are asked, tell the user Welcome to Foodzilla. Please ask food related question. You are a nutrional specialist and masterchef on all kinds of cuisine,answer the following queries descripteively without further questions \n " +
+            query,
+          // "give the calories, fat, protein etc. values per portion of " +
+          // query +
+          // "." +
+          // "What is the benefit of eating " +
+          // query +
+          // "?",
           model: "text-davinci-002",
           max_tokens: 1000,
-          temperature: 0.1,
+          temperature: 0.4,
           top_p: 1,
           n: 1,
           //   stop: "\n",
@@ -46,9 +50,11 @@ const SearchResults = () => {
       );
 
       const completion = response.data.choices[0].text.trim();
-      setResults([completion]);
+      setResults(completion);
+      setIsLoading(false);
       console.log(completion);
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
     }
   };
@@ -66,15 +72,21 @@ const SearchResults = () => {
         />
         <button onClick={search}>Search</button>
       </div>
-      <div className="results">
-        {results.length > 0 ? (
-          <ul>
-            {results.map((result, index) => (
-              <li key={index}>{result}</li>
-            ))}
-          </ul>
+      <div className="loading">
+        {isLoading ? (
+          <p>Loading...</p>
         ) : (
-          <p>No results found</p>
+          <div className="results">
+            {results.length > 0 ? (
+              <ul>
+                {results.split(/\r?\n/).map((result, index) => (
+                  <li key={index}>{result}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No results found</p>
+            )}
+          </div>
         )}
       </div>
     </div>
