@@ -29,6 +29,7 @@ export class OrdersListComponent extends Component {
   filter = (value) => {
     let newOrder = ["new order", "orderPreparing", "pickupReady", "onTheWay"];
     let deliveredOrder = ["picked up", "delivered"];
+    let cancelledOrder = ["cancelled"];
     let filteredList = [];
     switch (value) {
       case "all":
@@ -45,6 +46,12 @@ export class OrdersListComponent extends Component {
           return deliveredOrder.includes(order.ORD_STATUS);
         });
         this.setState({ orders: filteredList, filter: "delivered" });
+        break;
+      case "cancelled":
+        filteredList = this.masterOrdersList.filter((order) => {
+          return cancelledOrder.includes(order.ORD_STATUS);
+        });
+        this.setState({ orders: filteredList, filter: "cancelled" });
         break;
     }
   };
@@ -115,7 +122,7 @@ export class OrdersListComponent extends Component {
               return (
                 <OrderListItemComponent
                   order={order}
-                  key={order._id}
+                  key={order.ORDER_ID}
                   update={this.handleChildUpdate}
                 ></OrderListItemComponent>
               );
