@@ -61,7 +61,10 @@ export class OrdersListComponent extends Component {
       this.filter(this.state.filter);
     });
   };
-
+  handleChangePage = (event, newPage) => {
+    // setPage(newPage);
+    this.setState({ page: newPage });
+  };
   handleChangeRowsPerPage = (event) => {
     // setRowsPerPage(parseInt(event.target.value, 10));
     // setPage(0);
