@@ -1,49 +1,38 @@
 import React, { Component } from "react";
-import ImageGallery from "react-image-gallery";
+// import ImageGallery from "react-image-gallery";
 import NavComponent from "../SharedComponents/NavComponent";
 import { useState } from "react";
 import axios from "axios";
 import "./Home.css";
 
-// export class Home extends Component {
-//     images = [
-//         {
-//             "original": "https://images.squarespace-cdn.com/content/v1/5c5c3833840b161566b02a76/1573133725500-Y5PCN0V04I86HDAT8AT0/WBC_7095.jpg?format=2500w"
-//         },
-//         {
-//             "original": "https://www.gfs.com/sites/default/files/styles/hero_image_modern_/public/hero-modern/foodscape-issue1-hero.jpg?itok=r_mKc_-X"
-//         }
-
-//     ]
-//     render() {
-//         return (
-//             <div>
-
-//                 <NavComponent view="unknown"></NavComponent>
-//                 {/* <ImageGallery ref={i => this.imageGallery = i}
-//                     items={this.images} showIndex={true}
-//                 /> */}
-
-//             </div>
-//         )
-//     }
-// }
-
-// export default Home
-
 const SearchResults = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-
+  const images = [
+    {
+      original:
+        "https://images.squarespace-cdn.com/content/v1/5c5c3833840b161566b02a76/1573133725500-Y5PCN0V04I86HDAT8AT0/WBC_7095.jpg?format=2500w",
+    },
+    {
+      original:
+        "https://www.gfs.com/sites/default/files/styles/hero_image_modern_/public/hero-modern/foodscape-issue1-hero.jpg?itok=r_mKc_-X",
+    },
+  ];
   const search = async () => {
     try {
       const response = await axios.post(
         "https://api.openai.com/v1/completions",
         {
-          prompt: "What is the benefit of eating " + query,
+          prompt:
+            "give the calories, fat, protein etc. values per portion of " +
+            query +
+            "." +
+            "What is the benefit of eating " +
+            query +
+            "?",
           model: "text-davinci-002",
           max_tokens: 1000,
-          temperature: 0.7,
+          temperature: 0.1,
           top_p: 1,
           n: 1,
           //   stop: "\n",
