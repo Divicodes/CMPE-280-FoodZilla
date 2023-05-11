@@ -125,6 +125,14 @@ export class CustomerOrders extends Component {
           console.log(this.state)
         );
         break;
+      case "cancelled":
+        filteredList = this.masterOrderList.filter((order) => {
+          return order.ORD_STATUS === "cancelled";
+        });
+        this.setState({ orderList: filteredList, filter: "cancelled" }, () =>
+          console.log(this.state)
+        );
+        break;
     }
   };
   handleChangePage = (event, newPage) => {
@@ -138,6 +146,15 @@ export class CustomerOrders extends Component {
     this.setState({
       rowsPerPage: parseInt(event.target.value, 10),
       page: 0,
+    });
+  };
+  getAllOrdersList = () => {
+    console.log(this.props);
+    let url = `${baseUrl}/orders/customer/${this.props.match.params.custId}`;
+    axios.get(url).then((res) => {
+      this.masterOrderList = res.data;
+      console.log(res.data);
+      this.setState({ orderList: res.data });
     });
   };
   render() {
@@ -160,6 +177,7 @@ export class CustomerOrders extends Component {
               <option value="picked up">Picked Up</option>
               <option value="onTheWay">On the way</option>
               <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
             </select>
             {/* <select className="form-control">
                             <option value="new order">Order Recieved</option>
