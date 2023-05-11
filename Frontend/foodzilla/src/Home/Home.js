@@ -1,33 +1,41 @@
-import React, { Component } from "react";
-// import ImageGallery from "react-image-gallery";
-import NavComponent from "../SharedComponents/NavComponent";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./Home.css";
+import NavComponent from "../SharedComponents/NavComponent";
 
-const SearchResults = () => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const images = [
-    {
-      original:
-        "https://images.squarespace-cdn.com/content/v1/5c5c3833840b161566b02a76/1573133725500-Y5PCN0V04I86HDAT8AT0/WBC_7095.jpg?format=2500w",
-    },
-    {
-      original:
-        "https://www.gfs.com/sites/default/files/styles/hero_image_modern_/public/hero-modern/foodscape-issue1-hero.jpg?itok=r_mKc_-X",
-    },
-  ];
-  const search = async () => {
-    try {
-      setIsLoading(true);
+const Home = () => {
+  const [input, setInput] = useState("");
+  let botMessage = {
+    text: "Hi there, Im your food assitant here at Foodzilla. You can ask me any questions related to food",
+    sender: "bot",
+  };
+  const [messages, setMessages] = useState([botMessage]);
+
+  const messageEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [messages]);
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (input !== "") {
+      const userMessage = { text: input, sender: "user" };
+      setMessages((messages) => [...messages, userMessage]);
+      setInput("");
+
       const response = await axios.post(
         "https://api.openai.com/v1/completions",
         {
           prompt:
-            "Answer only food related queries. If other queries are asked, tell the user Welcome to Foodzilla. Please ask food related question. You are a nutrional specialist and masterchef on all kinds of cuisine,answer the following queries descripteively without further questions \n " +
-            query,
+            "Your name is Foodzilla. Answer only food related queries. If other queries are asked, tell the user Welcome to Foodzilla. Please ask food related question. You are a nutrional specialist and masterchef on all kinds of cuisine,answer the following queries descripteively without further questions \n " +
+            input,
           // "give the calories, fat, protein etc. values per portion of " +
           // query +
           // "." +
@@ -49,48 +57,36 @@ const SearchResults = () => {
         }
       );
 
-      const completion = response.data.choices[0].text.trim();
-      setResults(completion);
-      setIsLoading(false);
-      console.log(completion);
-    } catch (error) {
-      setIsLoading(false);
-      console.error(error);
+      const botResponseText = response.data.choices[0].text.trim();
+      const botMessage = { text: botResponseText, sender: "bot" };
+      setMessages((messages) => [...messages, botMessage]);
     }
   };
 
   return (
     <div>
       <NavComponent view="unknown"></NavComponent>
-      <h1>Watch What You EAT</h1>
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Enter your search query"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button onClick={search}>Search</button>
-      </div>
-      <div className="loading">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <div className="results">
-            {results.length > 0 ? (
-              <ul>
-                {results.split(/\r?\n/).map((result, index) => (
-                  <li key={index}>{result}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>No results found</p>
-            )}
-          </div>
-        )}
+      <h1>Welcome to FoodZilla</h1>
+      <div className="chatbot">
+        <div className="chatbot-window">
+          {messages.map((message, index) => (
+            <div key={index} className={message.sender}>
+              <p>{message.text}</p>
+            </div>
+          ))}
+          <div ref={messageEndRef} />
+        </div>
+        <form onSubmit={handleSend} className="chatbot-form">
+          <input
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Type a message..."
+          />
+          <button type="submit">Send</button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default SearchResults;
+export default Home;

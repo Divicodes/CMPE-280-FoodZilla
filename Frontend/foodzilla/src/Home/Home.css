@@ -9,6 +9,7 @@
 h1 {
   font-size: 24px;
   margin-top: 0;
+  text-align: center;
 }
 
 .search-bar {
@@ -46,6 +47,68 @@ button {
 
 p {
   margin: 0;
-  text-align: center;
-  color: #888;
+  /* text-align: center; */
+  color: #0b0a0a;
+}
+
+.chatbot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 600px;
+  width: 1400px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: auto;
+  resize: both;
+  margin-left: 10px;
+}
+
+.chatbot-window {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user {
+  align-self: flex-end;
+  background-color: #4fabe8;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.bot {
+  align-self: flex-start;
+  background-color: #eee;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.chatbot-form {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chatbot-form input {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+.chatbot-form button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #0084ff;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
 }
