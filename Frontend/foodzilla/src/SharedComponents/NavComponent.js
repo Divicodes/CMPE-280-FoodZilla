@@ -199,7 +199,7 @@ class NavComponent extends Component {
     <nav className="navbar navbar-expand-sm bg-dark navbar-dark ">
       <ul className="navbar-nav">
         <li className="nav-item active">
-          <Link className="nav-link" to="/">
+          <Link className="nav-link" to="/home">
             FoodZilla
           </Link>
         </li>
@@ -227,7 +227,7 @@ class NavComponent extends Component {
             </IconButton>
           </li>
           <li className="nav-item active">
-            <Link className="nav-link" to="#">
+            <Link className="nav-link" to="/home">
               FoodZilla
             </Link>
           </li>
@@ -260,7 +260,7 @@ class NavComponent extends Component {
           </IconButton>
         </li>
         <li className="nav-item active">
-          <Link className="nav-link" to="#">
+          <Link className="nav-link" to="/home">
             FoodZilla
           </Link>
         </li>
