@@ -6,7 +6,7 @@ import NavComponent from "../SharedComponents/NavComponent";
 const Home = () => {
   const [input, setInput] = useState("");
   let botMessage = {
-    text: "Hi there, Im your food assitant here at Foodzilla. You can ask me any questions related to food",
+    text: "Hi there, I'm your food assistant here at Foodzilla. You can ask me any questions related to food",
     sender: "bot",
   };
   const [messages, setMessages] = useState([botMessage]);
