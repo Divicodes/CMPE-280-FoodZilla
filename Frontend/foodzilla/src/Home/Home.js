@@ -52,7 +52,7 @@ const Home = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer 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`, // Replace with your GPT-3 API key
+            Authorization: `Bearer OPENAI_API_KEY`, // Replace with your GPT-3 API key
           },
         }
       );
